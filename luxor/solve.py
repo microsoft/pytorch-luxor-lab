@@ -1,38 +1,30 @@
-import os
+import argparse
 
 import torch
-from model import Net
+
 from dataset import LuxorDataset
+from model import Net
 
-train_dataset = LuxorDataset("l/l2", 1, 201)
-train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=10*6, shuffle=False)
+parser = argparse.ArgumentParser()
+parser.add_argument('--test_dataset_path', type=str, default="../l/l2", dest='test_dataset_path')
+parser.add_argument('--model_state_dict_path', type=str, default="statedict", dest='model_state_dict_path')
+args = parser.parse_args()
 
-
-model = Net()
-model = model.cuda()
-model.train()
-
-#optimizer = torch.optim.SGD(model.parameters(), lr=0.001)
-optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
-for epoch in range(10):
-    for i_batch, sample_batched in enumerate(train_loader):
-        features = sample_batched["x"].cuda()
-        labels = sample_batched["y"].cuda()
-        optimizer.zero_grad()
-        outputs = model(features)
-        loss = torch.nn.CrossEntropyLoss()(outputs, labels)
-        #print(loss)
-        loss.backward()
-        optimizer.step()
-
-
-test_dataset = LuxorDataset("l/l2", 1, 801)
+test_dataset = LuxorDataset(args.test_dataset_path, 1, 801)
 test_loader = torch.utils.data.DataLoader(test_dataset, batch_size=6, shuffle=False)
 
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+else:
+    device = torch.device("cpu")
+
+model = Net()
+model.to(device)
+model.load_state_dict(torch.load(args.model_state_dict_path))
 model.eval()
 with torch.no_grad():
     for i_batch, sample_batched in enumerate(test_loader):
-        features = sample_batched["x"].cuda()
+        features = sample_batched["x"].to(device=device)
         outputs = model(features)
         indices = outputs.argmax(1)
         letters = [chr(ord('a') + i) for i in indices]
