@@ -11,7 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--train_dataset_path', type=str, default="../l/l2", dest='train_dataset_path')
 parser.add_argument('--eval_dataset_path', type=str, default="../l/l2", dest='eval_dataset_path')
 
-parser.add_argument('--lr', type=float, default=0.00005, dest='lr')
+parser.add_argument('--lr', type=float, default=0.0001, dest='lr')
 parser.add_argument('--grad_norm', type=float, default=0, dest='grad_norm')
 parser.add_argument('--num_epochs', type=int, default=10, dest='num_epochs')
 parser.add_argument('--model_state_dict_path', type=str, default="statedict", dest='model_state_dict_path')
