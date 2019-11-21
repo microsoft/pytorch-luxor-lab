@@ -2,3 +2,5 @@ torch
 torchvision
 ax-platform
 onnxruntime-gpu
+requests
+tensorboard
