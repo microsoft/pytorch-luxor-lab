@@ -22,6 +22,7 @@ else:
 
 def train_wrapper(parameterization):
     net = Net()
+    parameterization["num_epochs"] = 1
     last_epoch_loss = train(net=net, data_loader=train_loader, parameters=parameterization, device=device)
     if math.isnan(last_epoch_loss):
         last_epoch_loss = 10**6
