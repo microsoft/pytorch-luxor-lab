@@ -27,7 +27,7 @@ def train(net, data_loader, parameters, device):
                 torch.nn.utils.clip_grad_norm_(net.parameters(), parameters["grad_norm"])
             optimizer.step()
 
-    return(epoch_loss)
+    return epoch_loss
 
 
 def evaluate(net, data_loader, device):
