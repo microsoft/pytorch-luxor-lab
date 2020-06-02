@@ -1,4 +1,5 @@
 import torch
+from torch.utils.tensorboard import SummaryWriter
 
 def train(net, data_loader, parameters, device):
     net.to(device=device)
@@ -12,6 +13,8 @@ def train(net, data_loader, parameters, device):
     )
     num_epochs = parameters.get("num_epochs", 10)
 
+    writer = SummaryWriter()
+    global_step = 0
     for epoch in range(1, num_epochs + 1):
         epoch_loss = 0.0
         for i_batch, sample_batched in enumerate(data_loader):
@@ -20,6 +23,8 @@ def train(net, data_loader, parameters, device):
             optimizer.zero_grad()
             outputs = net(features)
             loss = torch.nn.CrossEntropyLoss()(outputs, labels)
+            writer.add_scalar('Loss/train', loss.item(), global_step)
+            global_step += 1
             print("Epoch: ", epoch, "\tstep: ", i_batch, "\tloss: ", loss.item())
             epoch_loss += loss.item()
             loss.backward()
