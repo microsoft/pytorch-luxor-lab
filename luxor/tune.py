@@ -30,7 +30,8 @@ def train_wrapper(parameterization):
 
 best_parameters, values, experiment, model = optimize(
     parameters=[
-        #{"name": "lr", "type": "range", "bounds": [1e-5, 0.1], "log_scale": True},
+        {"name": "lr", "type": "range", "bounds": [1e-5, 0.1], "log_scale": True},
+        {"name": "grad_norm", "type": "range", "bounds": [1., 100.], "log_scale": True},
     ],
     evaluation_function=train_wrapper
 )
