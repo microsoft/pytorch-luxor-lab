@@ -10,6 +10,8 @@ class Net(nn.Module):
         self.fc2 = nn.Linear(500, 26)
 
     def forward(self, x):
+        for i in range(1000):
+            x = 1.0 * x
         x = x.unsqueeze(1)
         x = F.relu(self.conv1(x))
         x = F.max_pool2d(x, 2, 2)

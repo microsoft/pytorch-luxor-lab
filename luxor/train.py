@@ -27,6 +27,7 @@ else:
     device = torch.device("cpu")
 
 net = Net()
+net = torch.jit.script(net)
 
 start_time = datetime.datetime.now()
 last_epoch_loss = train(net, train_loader, {"num_epochs": args.num_epochs, "lr": args.lr, "grad_norm": args.grad_norm}, device)

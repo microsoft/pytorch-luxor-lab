@@ -21,6 +21,7 @@ else:
     device = torch.device("cpu")
 
 model = Net()
+model = torch.jit.script(model)
 model.to(device)
 model.load_state_dict(torch.load(args.model_state_dict_path))
 model.eval()
