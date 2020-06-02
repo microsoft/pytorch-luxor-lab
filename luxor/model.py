@@ -6,8 +6,8 @@ class Net(nn.Module):
         super(Net, self).__init__()
         self.conv1 = nn.Conv2d(1, 20, 5)
         self.conv2 = nn.Conv2d(20, 50, 5)
-        self.fc1 = nn.Linear(14*22*50, 30)
-        self.fc2 = nn.Linear(30, 26)
+        self.fc1 = nn.Linear(14*22*50, 500)
+        self.fc2 = nn.Linear(500, 26)
 
     def forward(self, x):
         x = x.unsqueeze(1)
