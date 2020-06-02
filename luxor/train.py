@@ -27,7 +27,6 @@ else:
     device = torch.device("cpu")
 
 net = Net()
-net = torch.jit.script(net)
 
 start_time = datetime.datetime.now()
 last_epoch_loss = train(net, train_loader, {"num_epochs": args.num_epochs, "lr": args.lr, "grad_norm": args.grad_norm}, device)
@@ -40,6 +39,11 @@ eval_dataset = LuxorDataset(args.eval_dataset_path, 190, 201)
 eval_loader = torch.utils.data.DataLoader(eval_dataset, batch_size=10*6, shuffle=False)
 
 torch.save(net.state_dict(), args.model_state_dict_path)
+
+for i_batch, sample_batched in enumerate(train_loader):
+    features = sample_batched["x"].to(device=device)
+    torch.onnx.export(net, features, "luxor.onnx", dynamic_axes={'0': {0: 'batch'}})
+    break
 
 score = evaluate(net, eval_loader, device)
 print("Validation accuracy:", score)
